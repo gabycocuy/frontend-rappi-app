@@ -22,8 +22,8 @@ export default function Products() {
       productId: product.id,
       name: product.name,
       price: product.price,
+      storeId: product.storeId,
       quantity: 1,
-      storeId: storeId,
     });
 
     localStorage.setItem("cart", JSON.stringify(cart));

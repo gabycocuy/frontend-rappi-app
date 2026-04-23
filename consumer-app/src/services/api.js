@@ -1,19 +1,30 @@
 const API = "http://localhost:3000";
 
-const getUserHeader = () => {
-  const user = localStorage.getItem("user");
-
-  return user
-    ? {
-        "Content-Type": "application/json",
-        user: user,
-      }
-    : {
-        "Content-Type": "application/json",
-      };
-};
-
 export const api = {
+  register: async (data) => {
+    const res = await fetch(`${API}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    return res.json();
+  },
+
+  login: async (data) => {
+    const res = await fetch(`${API}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    return res.json();
+  },
+
   getStores: async () => {
     const res = await fetch(`${API}/stores`);
     return res.json();
@@ -27,18 +38,19 @@ export const api = {
   createOrder: async (data) => {
     const res = await fetch(`${API}/orders`, {
       method: "POST",
-      headers: getUserHeader(),
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(data),
     });
 
     return res.json();
   },
 
-  getOrders: async (userId) => {
-    const res = await fetch(`${API}/orders/consumer/${userId}`, {
-      headers: getUserHeader(),
-    });
+  getOrders: async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
 
+    const res = await fetch(`${API}/orders/consumer/${user.id}`);
     return res.json();
   },
 };

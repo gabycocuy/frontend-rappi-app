@@ -9,7 +9,7 @@ export default function Cart() {
   const createOrder = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
 
-    if (cart.length === 0) {
+    if (!cart.length) {
       alert("Cart is empty");
       return;
     }
@@ -39,7 +39,7 @@ export default function Cart() {
 
       {cart.map((p, i) => (
         <div key={i}>
-          {p.name} - ${p.price} x {p.quantity}
+          {p.name} - ${p.price}
         </div>
       ))}
 
