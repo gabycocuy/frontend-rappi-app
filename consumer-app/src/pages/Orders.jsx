@@ -6,7 +6,9 @@ export default function Orders() {
 
   useEffect(() => {
     const loadOrders = async () => {
-      const data = await api.getOrders();
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      const data = await api.getOrders(user.id);
 
       setOrders(data);
     };
@@ -19,7 +21,10 @@ export default function Orders() {
       <h1>My Orders</h1>
 
       {orders.map((order) => (
-        <div key={order.id}>Order ID: {order.id}</div>
+        <div key={order.id}>
+          <p>Order ID: {order.id}</p>
+          <p>Status: {order.status}</p>
+        </div>
       ))}
     </div>
   );

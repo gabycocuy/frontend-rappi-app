@@ -13,12 +13,18 @@ export default function Products() {
     };
 
     loadProducts();
-  }, []);
+  }, [storeId]);
 
   const addToCart = (product) => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    cart.push(product);
+    cart.push({
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+      storeId: storeId,
+    });
 
     localStorage.setItem("cart", JSON.stringify(cart));
 
@@ -32,7 +38,6 @@ export default function Products() {
       {products.map((product) => (
         <div key={product.id}>
           <h3>{product.name}</h3>
-
           <p>${product.price}</p>
 
           <button onClick={() => addToCart(product)}>Add to Cart</button>

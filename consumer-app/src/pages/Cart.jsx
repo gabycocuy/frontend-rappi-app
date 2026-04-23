@@ -9,13 +9,25 @@ export default function Cart() {
   const createOrder = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
 
+    if (cart.length === 0) {
+      alert("Cart is empty");
+      return;
+    }
+
+    const storeId = cart[0].storeId;
+
+    const items = cart.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+    }));
+
     await api.createOrder({
       consumerId: user.id,
-      items: cart,
+      storeId,
+      items,
     });
 
     localStorage.removeItem("cart");
-
     setCart([]);
 
     alert("Order created");
@@ -27,7 +39,7 @@ export default function Cart() {
 
       {cart.map((p, i) => (
         <div key={i}>
-          {p.name} - ${p.price}
+          {p.name} - ${p.price} x {p.quantity}
         </div>
       ))}
 
