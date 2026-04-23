@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar({ setUser }) {
   const navigate = useNavigate();
 
   const logout = () => {
     localStorage.removeItem("user");
+    setUser(null);
     navigate("/");
   };
 

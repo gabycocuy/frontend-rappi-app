@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-export default function Login() {
+export default function Login({ setUser }) {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -26,11 +26,13 @@ export default function Login() {
     }
 
     if (data.role !== "store") {
-      alert("This app is for store accounts");
+      alert("This app is only for store users");
       return;
     }
 
     localStorage.setItem("user", JSON.stringify(data));
+
+    setUser(data); // 🔥 ESTO ES LO IMPORTANTE
 
     navigate("/dashboard");
   };

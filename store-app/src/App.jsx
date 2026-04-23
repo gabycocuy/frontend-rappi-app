@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useState } from "react";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -8,17 +9,14 @@ import Orders from "./pages/Orders";
 import Navbar from "./components/Navbar";
 
 function App() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   return (
     <BrowserRouter>
-      {user && <Navbar />}
+      {user && <Navbar setUser={setUser} />}
 
       <Routes>
-        <Route
-          path="/"
-          element={user ? <Navigate to="/dashboard" /> : <Login />}
-        />
+        <Route path="/" element={<Login setUser={setUser} />} />
 
         <Route path="/register" element={<Register />} />
 
