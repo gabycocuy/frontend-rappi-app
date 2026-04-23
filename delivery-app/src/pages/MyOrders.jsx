@@ -7,13 +7,19 @@ export default function MyOrders() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
+    if (!user) return;
+
     const fetchOrders = async () => {
       const data = await getMyOrders(user.id);
       setOrders(data);
     };
 
     fetchOrders();
-  }, []);
+  }, [user]);
+
+  if (!user) {
+    return <p>No user logged</p>;
+  }
 
   return (
     <div>

@@ -10,39 +10,29 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+    const res = await fetch("http://localhost:3000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (!res.ok) {
-        alert(data.error);
-        return;
-      }
-
-      const user = data.user || data;
-
-      if (user.role?.toLowerCase() !== "delivery") {
-        alert("This app is only for delivery users");
-        return;
-      }
-
-      localStorage.setItem("user", JSON.stringify(user));
-
-      navigate("/dashboard");
-    } catch (err) {
-      console.error(err);
-      alert("Server error");
+    if (!res.ok) {
+      alert(data.error);
+      return;
     }
+
+    if (data.role !== "delivery") {
+      alert("This app is only for delivery users");
+      return;
+    }
+
+    localStorage.setItem("user", JSON.stringify(data));
+
+    navigate("/dashboard");
   };
 
   return (
