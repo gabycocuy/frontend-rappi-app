@@ -9,27 +9,24 @@ export default function Cart() {
   const createOrder = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
 
-    if (!cart.length) {
-      alert("Cart is empty");
+    if (!user || cart.length === 0) return;
+
+    const data = await api.createOrder({
+      consumerId: user.id,
+      storeId: cart[0].storeId,
+      items: cart.map((p) => ({
+        productId: p.productId,
+        quantity: p.quantity || 1,
+      })),
+    });
+
+    if (data?.error) {
+      alert(data.error);
       return;
     }
 
-    const storeId = cart[0].storeId;
-
-    const items = cart.map((item) => ({
-      productId: item.productId,
-      quantity: item.quantity,
-    }));
-
-    await api.createOrder({
-      consumerId: user.id,
-      storeId,
-      items,
-    });
-
     localStorage.removeItem("cart");
     setCart([]);
-
     alert("Order created");
   };
 
