@@ -11,27 +11,22 @@ const getHeaders = () => {
 };
 
 export const api = {
-  async getStores() {
-    const res = await fetch(`${API}/stores`);
-    return res.json();
-  },
+  async createOrder({ storeId, lat, lng }) {
+    const user = JSON.parse(localStorage.getItem("user"));
 
-  async getProducts(storeId) {
-    const res = await fetch(`${API}/products?storeId=${storeId}`);
-
-    if (!res.ok) return [];
-
-    return res.json();
-  },
-
-  async createOrder(data) {
     const res = await fetch(`${API}/orders`, {
       method: "POST",
       headers: getHeaders(),
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        consumerId: user.id,
+        storeId,
+        lat,
+        lng,
+      }),
     });
 
-    return res.json();
+    const data = await res.json();
+    return data;
   },
 
   async getOrders() {

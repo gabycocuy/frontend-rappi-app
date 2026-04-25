@@ -2,23 +2,34 @@ import { useState } from "react";
 import { api } from "../services/api";
 
 export default function Cart() {
-  const [cart, setCart] = useState(
-    JSON.parse(localStorage.getItem("cart")) || [],
-  );
+  const [cart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
 
   const createOrder = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
 
-    if (!user || cart.length === 0) return;
+    if (!user) {
+      alert("No user");
+      return;
+    }
+
+    if (cart.length === 0) {
+      alert("Cart vacío");
+      return;
+    }
+
+    if (!cart[0].storeId) {
+      alert("Error: producto sin storeId");
+      console.log(cart);
+      return;
+    }
 
     const data = await api.createOrder({
-      consumerId: user.id,
       storeId: cart[0].storeId,
-      items: cart.map((p) => ({
-        productId: p.productId,
-        quantity: p.quantity || 1,
-      })),
+      lat: 3.44,
+      lng: -76.53,
     });
+
+    console.log(data);
 
     if (data?.error) {
       alert(data.error);
@@ -26,7 +37,6 @@ export default function Cart() {
     }
 
     localStorage.removeItem("cart");
-    setCart([]);
     alert("Order created");
   };
 

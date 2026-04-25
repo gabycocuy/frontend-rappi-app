@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../services/api";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
+  const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -31,9 +33,13 @@ export default function Orders() {
       {orders.length === 0 && <p>No orders</p>}
 
       {orders.map((order) => (
-        <div key={order.id}>
-          <p>{order.id}</p>
-          <p>{order.status}</p>
+        <div key={order.id} style={{ marginBottom: "20px" }}>
+          <p>Order: {order.id}</p>
+          <p>Status: {order.status}</p>
+
+          <button onClick={() => navigate(`/track/${order.id}`)}>
+            Track Order
+          </button>
         </div>
       ))}
     </div>

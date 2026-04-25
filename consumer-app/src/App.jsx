@@ -9,6 +9,8 @@ import Stores from "./pages/Stores";
 import Products from "./pages/Products";
 import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
+import OrderTracking from "./pages/OrderTracking";
+import CreateOrderMap from "./pages/CreateOrderMap";
 
 function App() {
   return (
@@ -23,6 +25,9 @@ function App() {
         <Route path="/products/:storeId" element={<Products />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/orders" element={<Orders />} />
+
+        <Route path="/create-order/:storeId" element={<CreateOrderMap />} />
+        <Route path="/track/:orderId" element={<OrderTracking />} />
       </Routes>
     </BrowserRouter>
   );
