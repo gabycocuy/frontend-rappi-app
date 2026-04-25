@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { getAvailableOrders, acceptOrder } from "../api";
+import { useNavigate } from "react-router-dom";
 
 export default function AvailableOrders() {
   const [orders, setOrders] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadOrders = async () => {
@@ -18,6 +20,11 @@ export default function AvailableOrders() {
     loadOrders();
   }, []);
 
+  const handleAccept = async (orderId) => {
+    await acceptOrder(orderId);
+    navigate(`/order/${orderId}`);
+  };
+
   return (
     <div>
       <h2>Available Orders</h2>
@@ -28,7 +35,7 @@ export default function AvailableOrders() {
         <div key={order.id}>
           <p>{order.id}</p>
 
-          <button onClick={() => acceptOrder(order.id)}>Accept</button>
+          <button onClick={() => handleAccept(order.id)}>Accept</button>
         </div>
       ))}
     </div>

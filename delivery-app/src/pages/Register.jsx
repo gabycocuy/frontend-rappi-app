@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-export default function Register() {
+export default function Register({ setUser }) {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
-    role: "delivery",
   });
 
   const handleChange = (e) => {
@@ -21,7 +20,6 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // validación básica para evitar errores del backend
     if (!form.name || !form.email || !form.password) {
       alert("Please fill all fields");
       return;
@@ -48,12 +46,10 @@ export default function Register() {
         return;
       }
 
-      alert("Delivery account created!");
-
-      // redirige al login
-      navigate("/");
-    } catch (err) {
-      console.error(err);
+      localStorage.setItem("user", JSON.stringify(data));
+      setUser(data);
+      navigate("/dashboard");
+    } catch {
       alert("Server error");
     }
   };
